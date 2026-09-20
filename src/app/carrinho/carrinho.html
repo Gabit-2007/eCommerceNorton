@@ -1,7 +1,11 @@
-<div class="container">
-  <h1 class="text-primary">Bootstrap funcionando?</h1>
-
-  <button class="btn btn-primary">
-    Clique aqui
-  </button>
+<div class="col content-center justify-items-center">
+    <div class="card w-2xl text-center flex flex-row"
+    *ngFor="let obj of lista">
+        
+        <div class="card-title">{{obj.produto}}</div>
+        <div class="card-body">
+          {{obj.quantidade}} <br>
+            R$ {{obj.valor}} 
+        </div>
+    </div>
 </div>
