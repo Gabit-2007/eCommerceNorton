@@ -1,3 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+:root {
+    --white: #FFFFF5;
+    --black: #00060C;
+    --light-bronze: #cb997eff;
+    --powder-petal: #eddcd2ff;
+    --linen: #fff1e6ff;
+    --parchment: #f0efebff;
+    --desert-sand: #ddbea9ff;
+    --dry-sage: #a5a58dff;
+    --ash-grey: #b7b7a4ff;
+}
+
+body {
+    background-color: var(--powder-petal);
+    margin: 0;
+    min-height: 100vh;
+}

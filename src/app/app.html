@@ -1,12 +1,63 @@
-<header class="container bg-[var(--pink)] text-light p-3 d-flex">
-      <nav class="btn-group gap-4 justify-content-end d-flex ms-auto align-content-center">
-        <a href="cadastro" class="btn btn-secondary rounded">meu cadastro</a>
-        <a href="pedidos" class="btn btn-secondary rounded">meus pedidos</a>
-        <a href="promo" class="btn btn-secondary rounded">promoções</a>
-        <a href="cesta" class="btn btn-secondary rounded">carrinho</a>
+<header class="bg-(--pink) w-full text-light flex flex-col h-fit justify-between items-center">
+  <div class="px-3 py-1 flex flex-row justify-between items-center w-full" >
+    <input 
+      type="search" 
+      class="bg-white rounded-2xl text-xl p-2 text-(--black) focus-within:outline-none w-120 max-h-fit" 
+      placeholder="Pesquisar..."
+    >
+
+    <div class="bg-pink-300 w-20 text-xl text-center h-15">
+      <a href="">
+        <button>
+          Logo
+        </button>
+      </a>
+      
+    </div>
+
+    <div class="flex gap-4">
+      <div>
+        <a href="login">
+          <button>
+            <img src="user.png">
+          </button>
+        </a>
+      </div>
+        
+        <div>
+          <a href="carrinho">
+            <button>
+              <img src="cart.png">
+            </button>
+          </a>
+        </div>
+
+        <div>
+          <a href="favoritos">
+            <button>
+              <img src="star.png">
+            </button>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  <div class="bg-pink-200 w-full h-fit p-3">
+    <nav class="btn-group gap-4 justify-content-end d-flex ms-auto align-content-center">
+        <a href="pintura" class="btn text rounded">pintura</a>
+        <a href="ceramica" class="btn rounded">ceramica</a>
+        <a href="vela" class="btn rounded">Vela</a>
+        <a href="linha" class="btn rounded">Linha</a>
+        <a href="papelaria" class="btn rounded">Papelaria</a>
+        <a href="costura" class="btn rounded">Costura</a>
+
       </nav>
+  </div>
 </header>
-<router-outlet />
+<div>
+  <router-outlet class=""/>
+</div>
 <footer class="bg-secondary text-light text-end ">
 
 </footer>
