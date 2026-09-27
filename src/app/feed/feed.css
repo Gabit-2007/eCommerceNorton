@@ -1,0 +1,9 @@
+h4 {
+    font-size: 40px;
+}
+
+button {
+    border-radius: 16px;
+    justify-content: center;
+    align-items: center;
+}

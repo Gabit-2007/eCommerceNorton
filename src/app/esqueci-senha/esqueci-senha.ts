@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { InputComponent } from '../input/input';
 
 @Component({
   selector: 'app-esqueci-senha',
-  imports: [],
+  imports: [InputComponent],
   templateUrl: './esqueci-senha.html',
   styleUrl: './esqueci-senha.css',
 })

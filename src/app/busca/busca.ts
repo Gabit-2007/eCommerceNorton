@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { LucideSearch } from '@lucide/angular'
 
 @Component({
   selector: 'app-busca',
-  imports: [],
+  imports: [LucideSearch],
+  standalone: true,
   templateUrl: './busca.html',
   styleUrl: './busca.css',
 })

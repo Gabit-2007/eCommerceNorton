@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { InputComponent } from '../input/input';
 
 @Component({
-  selector: 'app-cadastro',
+  selector: 'app-email-senha',
   imports: [InputComponent],
-  templateUrl: './cadastro.html',
-  styleUrl: './cadastro.css',
+  templateUrl: './email-senha.html',
+  styleUrl: './email-senha.css',
 })
-export class Cadastro {}
+export class EmailSenha {}

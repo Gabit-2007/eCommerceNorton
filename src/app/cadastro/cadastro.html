@@ -1,28 +1,35 @@
 
-<div class="container center pt-4">
-    <h2 class="text-primary">Cadastro</h2>
+<div class="container center">
+    <div class="flex justify-center items-center w-full py-10">
 
-    <div class="col">
-        <p>Preencha os dados abaixo</p>
-        <hr/>
-        <br/>
+    <div 
+    class="flex flex-col md:w-[40%] bg-(--linen) 
+    border-2 border-amber-900/50 rounded-xl p-4 
+    shadow-2xl">
+        <h1>CADASTRAR-SE</h1>
+        <app-input
+            label = 'Email'
+            placeholder = 'usuario@email.com'
+            type = 'email'
+        ></app-input>
 
-        <div class="col-xs-4">
-            <label>E-mail</label><input type="email" id="txtEmail" class="form-control"/>
-        </div>
-
-        <div class="col-xs-4">
-            <label>Nome</label><input type="name" id="txtNome" class="form-control"/>
-        </div>
-
-        <div class="col-xs-4">
-            <label>Senha</label><input type="password" id="txtSenha" class="form-control"/>
-        </div>
-
-        <div class="col-xs-4">
-            <label>Confirme a Senha</label><input type="password" id="txtSenha2" class="form-control"/>
-        </div>
-
-        <button class="btn btn-primary">Cadastrar-se</button>
+        <app-input
+            label = 'Senha'
+            placeholder = 'Senha@123'
+            type = 'password'
+        ></app-input>
+        <app-input
+            label = 'Confirme a senha'
+            placeholder = 'Senha@123'
+            type = 'password'
+        ></app-input>
+        <app-input
+            label = 'Data de nascimento'
+            type = 'date'
+        ></app-input>
+        <button class="bg-green-900 text-white py-2 px-10 rounded w-fit self-center">Finalizar</button>
+        <p class="text-center mt-3">Já tem conta? <a href="login">Faça login!</a></p>
     </div>
 </div>
+</div>
+

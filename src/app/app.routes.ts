@@ -13,6 +13,8 @@ import { Ceramica } from './ceramica/ceramica';
 import { Papelaria } from './papelaria/papelaria';
 import { Costura } from './costura/costura';
 import { Favoritos } from './favoritos/favoritos';
+import { EmailSenha } from './email-senha/email-senha';
+import { ConfirmarCodigo } from './confirmar-codigo/confirmar-codigo';
 
 
 export const routes: Routes = [
@@ -20,8 +22,10 @@ export const routes: Routes = [
     {path: "busca", component: Busca},
     {path: "cadastro", component: Cadastro},
     {path: "carrinho", component: Carrinho},
-    {path: "detalhe-item", component: DetalheItem}, 
+    {path: "detalhe-item/:codigo", component: DetalheItem}, 
     {path: "esqueci-senha", component: EsqueciSenha},
+    {path: "email-senha", component: EmailSenha},
+    {path: "codigo-email", component: ConfirmarCodigo},
     {path: "login", component: Login},
     {path: 'pintura', component: Pintura},
     {path: 'ceramica', component: Ceramica},
