@@ -1,8 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import 'tailwindcss';
 
+
 :root {
+    --white: #FFFFF5;
+    --black: #00060C;
+    --light-bronze: #cb997eff;
+    --powder-petal: #eddcd2ff;
+    --linen: #fff1e6ff;
+    --parchment: #f0efebff;
+    --desert-sand: #ddbea9ff;
+    --dry-sage: #a5a58dff;
+    --ash-grey: #b7b7a4ff;
+}
+
+@theme {
+    --font-title: "Bebas Neue", sans-serif;
+    --font-body: 'Be Vietnam Pro', sans-serif;
     --white: #FFFFF5;
     --black: #00060C;
     --light-bronze: #cb997eff;
@@ -18,4 +35,12 @@ body {
     background-color: var(--parchment);
     margin: 0;
     min-height: 100vh;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    h1 {
+        font-family: var(--font-title);
+    }
+    p, h2, h3, h4, button, label, input, nav, a {
+        font-family: var(--font-body);
+    }
 }

@@ -1,1 +1,19 @@
-<p>detalhe-item works!</p>
+<div *ngIf="produto">
+
+  <img src="{{ produto.codigo }}.jpg">
+
+  <h1>{{ produto.nome }}</h1>
+
+  <p>
+    {{ produto.descritivo }}
+  </p>
+
+  <p>
+    R$ {{ produto.valor }}
+  </p>
+
+  <p *ngIf="produto.valorPromo > 0">
+    R$ {{ produto.valorPromo }}
+  </p>
+
+</div>

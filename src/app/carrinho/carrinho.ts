@@ -1,49 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ItemCesta } from '../model/item-cesta';
-import { NgForOf } from '@angular/common';
+import { CommonModule, NgForOf } from '@angular/common';
+import { StorageService } from '../service/storageService';
 
 @Component({
   selector: 'app-carrinho',
-  imports: [NgForOf],
+  imports: [NgForOf, CommonModule],
   templateUrl: './carrinho.html',
   styleUrl: './carrinho.css',
 })
-export class Carrinho {
-  lista: ItemCesta[] = [
-  {
-    "produto": 1,
-    "quantidade": 2,
-    "valor": 49.90
-  },
-  {
-    "produto": 2,
-    "quantidade": 1,
-    "valor": 39.90
-  },
-  {
-    "produto": 4,
-    "quantidade": 1,
-    "valor": 59.90
-  },
-  {
-    "produto": 6,
-    "quantidade": 3,
-    "valor": 42.90
-  },
-  {
-    "produto": 7,
-    "quantidade": 1,
-    "valor": 54.90
-  },
-  {
-    "produto": 9,
-    "quantidade": 2,
-    "valor": 64.90
-  },
-  {
-    "produto": 10,
-    "quantidade": 1,
-    "valor": 44.90
-  }
-]
+export class Carrinho implements OnInit {
+    private storage = inject(StorageService)
+
+    ngOnInit(): ItemCesta[] {
+        const itens = this.storage.getItemsCart()
+        return itens
+      }
+
+    FinalizarCompra() : void {
+      localStorage.removeItem('user_cart')
+    }
+
+    RemoverItem(id: number) : void {
+      const itens = this.storage.getItemsCart()
+      const newList = itens.filter(d => d.produto !== id)
+      localStorage.setItem('user_cart', JSON.stringify(newList))
+    }
 }
+
