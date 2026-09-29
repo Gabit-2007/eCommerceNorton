@@ -1,12 +1,49 @@
-<div class="col content-center justify-items-center">
-    <div class="card w-2xl text-center flex flex-row"
-    *ngFor="let item of itens">
-        <div *ngIf="getProduto(item.produto) as obj">
-            <div class="card-title">{{obj.nome}}</div>
-            <div class="card-body">
-            {{obj.quantidade}} <br>
-                R$ {{obj.valor}}
+<div class="flex flex-col md:flex-row content-center justify-items-center p-4">
+    <div class="flex-1 flex flex-col gap-3">
+        <div class="card w-2xl text-center flex flex-row"
+        *ngFor="let item of itens">
+            <div class="flex flex-row p-3"
+            *ngIf="getProduto(item.produto) as obj">
+                <div class="flex-1">
+                    <img src="{{obj.codigo}}.jpg" class="max-w-[60%] rounded-2xl">
+                </div>
+                <div class="flex-2 text-left">
+                    <p class="text-lg">{{obj.nome}}</p>
+                    <div class="flex-1" *ngIf="obj.valorPromo > 0">
+                        <p class="line-through text-sm text-gray-500">
+                        R$ {{ obj.valor }}
+                        </p>
+
+                        <p class="text-lg font-bold">
+                            R$ {{ obj.valorPromo }}
+                        </p>
+                    </div>
+
+                    <div *ngIf="obj.valorPromo <= 0">
+                        <p>
+                        R$ {{ obj.valor }}
+                        </p>    
+                    </div>
+                    <p>
+                    {{obj.quantidade}}x <br>
+                    </p>
+                </div>
+
+                <button (click)="RemoverItem(obj.codigo)" type="button">
+                    <svg lucideTrash size="20" color="#c1121f" class="self-end"></svg>
+                </button>
+
+                </div>
             </div>
-        </div>
+    </div>
+    <div class="flex-1">
+            <div class="card w-full text-center flex flex-col">
+                <h1>Resumo do Pedido</h1>
+
+                <div>
+                    <p>Preço</p>
+                    <p *ngIf="totalizarValor() as total" >{{total}}</p>
+                </div>
+            </div>
         </div>
 </div>

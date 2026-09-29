@@ -23,8 +23,15 @@ export class StorageService {
     ///#region Funções do carrinho
     setItemCart(item : ItemCesta): void {
         const itensCart = this.getItemsCart()
-        itensCart?.push(item)
 
+        const itensAdded = itensCart.find(i => i.produto === item.produto)
+  
+        if(itensAdded){
+            itensAdded.quantidade += 1
+            localStorage.setItem('user_cart', JSON.stringify(itensAdded))
+            return
+        }
+        itensCart?.push(item)
         localStorage.setItem('user_cart', JSON.stringify(itensCart))
     }
 

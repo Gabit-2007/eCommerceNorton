@@ -4,10 +4,11 @@ import { CommonModule, NgForOf } from '@angular/common';
 import { StorageService } from '../service/storageService';
 import { Produto } from '../model/produto';
 import { produtosMock } from '../mocks/produtos.mock';
+import { LucideTrash } from '@lucide/angular';
 
 @Component({
   selector: 'app-carrinho',
-  imports: [NgForOf, CommonModule],
+  imports: [NgForOf, CommonModule, LucideTrash],
   templateUrl: './carrinho.html',
   styleUrl: './carrinho.css',
 })
@@ -16,6 +17,9 @@ export class Carrinho implements OnInit {
 
     itens: ItemCesta[] = []
     produtos = produtosMock
+
+    valorTotal = 0
+    valorEconomizado = 0
 
     ngOnInit(): void {
         this.itens = this.storage.getItemsCart()
@@ -27,6 +31,14 @@ export class Carrinho implements OnInit {
         )
       }
 
+      totalizarValor(): any {
+        for(let i = 0; i < this.itens.length; i++){
+          this.itens.map(i => this.valorTotal += (i.valor * i.quantidade))
+        }
+        
+        return this.valorTotal
+      }
+
     FinalizarCompra() : void {
       localStorage.removeItem('user_cart')
     }
@@ -35,6 +47,7 @@ export class Carrinho implements OnInit {
       const itens = this.storage.getItemsCart()
       const newList = itens.filter(d => d.produto !== id)
       localStorage.setItem('user_cart', JSON.stringify(newList))
+      window.location.reload()
     }
 }
 

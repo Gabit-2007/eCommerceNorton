@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideLucideIcons, LucidePlus } from '@lucide/angular'
+import { provideLucideIcons, LucideUser, LucideShoppingCart, LucideShoppingCartPlus, LucideStar } from '@lucide/angular'
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
@@ -10,6 +10,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes), 
     provideClientHydration(withEventReplay()),
-    provideLucideIcons(LucidePlus,)
+    provideLucideIcons(LucideShoppingCart, LucideShoppingCartPlus, LucideStar, LucideUser)
   ]
 };
