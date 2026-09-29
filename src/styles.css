@@ -39,6 +39,7 @@ body {
     scrollbar-width: min;
     h1 {
         font-family: var(--font-title);
+        color: var(--powder-petal);
     }
     p, h2, h3, h4, button, label, input, nav, a {
         font-family: var(--font-body);
