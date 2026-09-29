@@ -55,6 +55,7 @@ export class StorageService {
         }
 
         localStorage.setItem('user_favorites', JSON.stringify(favItens))
+        
     }
 
     getItemFavorite(): Pick<Produto, 'codigo'>[] {

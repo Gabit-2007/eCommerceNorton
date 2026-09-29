@@ -42,7 +42,7 @@
 
                 <div>
                     <p>Preço</p>
-                    <p *ngIf="totalizarValor() as total" >{{total}}</p>
+                    <p >Total: R$ {{ totalCarrinho() | number:'1.2-2' }}</p>
                 </div>
             </div>
         </div>

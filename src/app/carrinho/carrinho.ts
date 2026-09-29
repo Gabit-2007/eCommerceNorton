@@ -49,5 +49,23 @@ export class Carrinho implements OnInit {
       localStorage.setItem('user_cart', JSON.stringify(newList))
       window.location.reload()
     }
+
+    totalCarrinho(): number {
+      return this.itens.reduce((total, item) => {
+        const produto = produtosMock.find(
+          produto => produto.codigo === item.produto
+        );
+
+        if (!produto) {
+          return this.valorTotal;
+        }
+
+        const preco = produto.valorPromo > 0
+          ? produto.valorPromo
+          : produto.valor;
+
+        return this.valorTotal + (preco * item.quantidade);
+      }, 0);
+    }
 }
 

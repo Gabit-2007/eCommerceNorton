@@ -27,6 +27,12 @@ export class DetalheItem implements OnInit {
       this.storage.setItemCart(item)
     }
 
+    favoritar(produto: Produto): void {
+      this.storage.setItemFavorite({
+        codigo: produto.codigo
+      });
+    }
+
   produto: Produto | undefined;
 
   ngOnInit(): void {
