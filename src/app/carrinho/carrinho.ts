@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ItemCesta } from '../model/item-cesta';
 import { CommonModule, NgForOf } from '@angular/common';
 import { StorageService } from '../service/storageService';
+import { Produto } from '../model/produto';
+import { produtosMock } from '../mocks/produtos.mock';
 
 @Component({
   selector: 'app-carrinho',
@@ -12,9 +14,17 @@ import { StorageService } from '../service/storageService';
 export class Carrinho implements OnInit {
     private storage = inject(StorageService)
 
-    ngOnInit(): ItemCesta[] {
-        const itens = this.storage.getItemsCart()
-        return itens
+    itens: ItemCesta[] = []
+    produtos = produtosMock
+
+    ngOnInit(): void {
+        this.itens = this.storage.getItemsCart()
+      }
+
+      getProduto(codigo: number): Produto | undefined {
+        return this.produtos.find(
+          produto => produto.codigo === codigo
+        )
       }
 
     FinalizarCompra() : void {

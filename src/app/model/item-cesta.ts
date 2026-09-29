@@ -1,3 +1,5 @@
+import { Produto } from "./produto";
+
 export class ItemCesta {
     produto: number=0;
     quantidade: number=0;

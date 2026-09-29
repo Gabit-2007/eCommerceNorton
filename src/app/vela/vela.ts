@@ -20,7 +20,7 @@ export class Vela {
   }
 
   adicionarCarrinho(produto: Produto) : void {
-    console.log("a", produto.codigo)
+     
     const item: ItemCesta = {
       quantidade: 1,
       produto: produto.codigo,
