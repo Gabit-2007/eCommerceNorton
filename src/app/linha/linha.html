@@ -7,7 +7,7 @@
         <div class="card-body">
              R$ {{obj.valor}} <br>
             <div *ngIf="obj.valorPromo > 0">
-                R$ {{obj.valorPromo}}
+               Por R$ {{obj.valorPromo}}
             </div>
         </div>
         <button class="bg-(--white) border border-blue-400 w-full rounded-xl text-blue-600 p-2 md:text-xl 
@@ -17,6 +17,8 @@
 
         <button class="bg-green-300 border border-green-400 w-full rounded-xl text-green-600 p-2 md:text-xl 
         transition-colors ease-out duration-200
-        hover:bg-green-700 hover:text-white" *ngIf=" obj.quantidade > 0">Comprar</button>
+        hover:bg-green-700 hover:text-white" 
+        type="button"
+        *ngIf=" obj.quantidade > 0">Comprar</button>
     </div>
 </div>

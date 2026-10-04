@@ -18,7 +18,6 @@ export class Carrinho implements OnInit {
     itens: ItemCesta[] = []
     produtos = produtosMock
 
-    valorTotal = 0
     valorEconomizado = 0
 
     ngOnInit(): void {
@@ -31,25 +30,6 @@ export class Carrinho implements OnInit {
         )
       }
 
-      totalizarValor(): any {
-        for(let i = 0; i < this.itens.length; i++){
-          this.itens.map(i => this.valorTotal += (i.valor * i.quantidade))
-        }
-        
-        return this.valorTotal
-      }
-
-    FinalizarCompra() : void {
-      localStorage.removeItem('user_cart')
-    }
-
-    RemoverItem(id: number) : void {
-      const itens = this.storage.getItemsCart()
-      const newList = itens.filter(d => d.produto !== id)
-      localStorage.setItem('user_cart', JSON.stringify(newList))
-      window.location.reload()
-    }
-
     totalCarrinho(): number {
       return this.itens.reduce((total, item) => {
         const produto = produtosMock.find(
@@ -57,15 +37,27 @@ export class Carrinho implements OnInit {
         );
 
         if (!produto) {
-          return this.valorTotal;
+          return total;
         }
 
         const preco = produto.valorPromo > 0
           ? produto.valorPromo
           : produto.valor;
 
-        return this.valorTotal + (preco * item.quantidade);
+        return total + (preco * item.quantidade);
       }, 0);
+    }
+    FinalizarCompra() : void {
+      localStorage.removeItem('user_cart')
+    }
+
+    RemoverItem(id: number): void {
+      this.itens = this.itens.filter(item => item.produto !== id);
+
+      localStorage.setItem(
+        'user_cart',
+        JSON.stringify(this.itens)
+      );
     }
 }
 
