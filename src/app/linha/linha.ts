@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { produtosMock } from '../mocks/produtos.mock';
 import { CommonModule } from '@angular/common';
+import { CardProduto } from '../card-produto/card-produto';
 
 @Component({
   selector: 'app-linha',
-  imports: [CommonModule],
+  imports: [CommonModule, CardProduto],
   templateUrl: './linha.html',
   styleUrl: './linha.css',
 })

@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 import { StorageService } from '../service/storageService';
 import { Produto } from '../model/produto';
 import { ItemCesta } from '../model/item-cesta';
+import { CardProduto } from '../card-produto/card-produto';
 
 @Component({
   selector: 'app-papelaria',
-  imports: [CommonModule],
+  imports: [CommonModule, CardProduto],
   templateUrl: './papelaria.html',
   styleUrl: './papelaria.css',
 })

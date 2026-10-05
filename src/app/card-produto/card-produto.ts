@@ -1,27 +1,27 @@
-import { Component, inject } from '@angular/core';
-import { produtosMock } from '../mocks/produtos.mock';
-import { CommonModule } from '@angular/common';
+import { Component, inject, Input } from '@angular/core';
+import { Produto } from '../model/produto';
 import { Router } from '@angular/router';
 import { StorageService } from '../service/storageService';
-import { Produto } from '../model/produto';
 import { ItemCesta } from '../model/item-cesta';
-import { CardProduto } from '../card-produto/card-produto';
+import { CommonModule, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-vela',
-  imports: [CommonModule, CardProduto],
-  templateUrl: './vela.html',
-  styleUrl: './vela.css',
+  selector: 'app-card-produto',
+  imports: [CommonModule, NgIf],
+  templateUrl: './card-produto.html',
+  styleUrl: './card-produto.css',
 })
-export class Vela {
+export class CardProduto {
+  @Input() produto!: Produto;
+
   private router = inject(Router);
-  private storage = inject(StorageService)
+  private storage = inject(StorageService);
+
   verDetalhe(codigo: number) : void {
     this.router.navigate(['/detalhe-item', codigo]);
   }
 
   adicionarCarrinho(produto: Produto) : void {
-     
     const item: ItemCesta = {
       quantidade: 1,
       produto: produto.codigo,
@@ -30,6 +30,4 @@ export class Vela {
 
     this.storage.setItemCart(item)
   }
-
-  produtos = produtosMock.filter(p => p.categoria === 'Vela');
 }

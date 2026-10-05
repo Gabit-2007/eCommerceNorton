@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Cliente } from "../model/cliente";
 import { Produto } from "../model/produto";
 import { ItemCesta } from "../model/item-cesta";
@@ -8,9 +8,10 @@ import { ItemCesta } from "../model/item-cesta";
 })
 
 export class StorageService {
+
     ///#region Funções de usuário
     setUser(user : Pick<Cliente, 'nome' | 'senha' | 'dtNascimento'>): void {
-        localStorage.setItem('user_data', JSON.stringify(user))
+        window.localStorage.setItem('user_data', JSON.stringify(user))
     }
 
     getUser(): Pick<Cliente, 'nome' | 'senha' | 'dtNascimento'> | null {
@@ -28,11 +29,12 @@ export class StorageService {
   
         if(itensAdded){
             itensAdded.quantidade += 1
-            localStorage.setItem('user_cart', JSON.stringify(itensAdded))
+            localStorage.setItem('user_cart', JSON.stringify(itensCart))
             return
         }
         itensCart?.push(item)
         localStorage.setItem('user_cart', JSON.stringify(itensCart))
+
     }
 
     getItemsCart(): ItemCesta[] {
