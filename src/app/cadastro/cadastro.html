@@ -1,7 +1,7 @@
 
 <div class="container center">
     <div class="flex justify-center items-center w-full py-10">
-
+        <div></div>
     <div 
     class="flex flex-col md:w-[40%] bg-(--linen) 
     border-2 border-amber-900/50 rounded-xl p-4 
@@ -11,12 +11,16 @@
             label = 'Email'
             placeholder = 'usuario@email.com'
             type = 'email'
+            name="TxtEmail"
+            [(ngModel)]="obj.email"
         ></app-input>
 
         <app-input
             label = 'Senha'
             placeholder = 'Senha@123'
             type = 'password'
+            name="txtSenha"
+            [(ngModel)]="obj.senha"
         ></app-input>
         <app-input
             label = 'Confirme a senha'
@@ -26,14 +30,22 @@
         <app-input
             label = 'Data de nascimento'
             type = 'date'
+            name="txtDataNasc"
+            [(ngModel)]="obj.dtNascimento"
         ></app-input>
         <app-input
             label = 'Endereço'
             placeholder = 'Rua abc, são paulo - Brasil'
             type = 'text'
+            name="txtEndereco"
+            [(ngModel)]="obj.endereco"
         ></app-input>
         <a href="login">
-            <button class="bg-green-900 text-white py-2 px-10 rounded w-fit self-center">Finalizar</button>
+            <button 
+            class="bg-green-900 text-white py-2 px-10 rounded w-fit self-center"
+            (click)="gravar()"
+            
+            >Finalizar</button>
         </a>
         <p class="text-center mt-3">Já tem conta? <a href="login">Faça login!</a></p>
     </div>
