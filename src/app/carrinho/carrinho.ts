@@ -1,63 +1,114 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ItemCesta } from '../model/item-cesta';
-import { CommonModule, NgForOf } from '@angular/common';
-import { StorageService } from '../service/storageService';
-import { Produto } from '../model/produto';
-import { produtosMock } from '../mocks/produtos.mock';
+
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { LucideTrash } from '@lucide/angular';
+import { finalize, forkJoin } from 'rxjs';
+
+import { ItemCesta } from '../model/item-cesta';
+import { Produto } from '../model/produto';
+import { StorageService } from '../service/storageService';
+import { ProdutoService } from '../service/produto-service';
 
 @Component({
   selector: 'app-carrinho',
-  imports: [NgForOf, CommonModule, LucideTrash],
+  standalone: true,
+  imports: [CommonModule, LucideTrash],
   templateUrl: './carrinho.html',
   styleUrl: './carrinho.css',
 })
 export class Carrinho implements OnInit {
-    private storage = inject(StorageService)
+  private storage = inject(StorageService);
+  private produtoService = inject(ProdutoService);
+  private cdr = inject(ChangeDetectorRef);
 
-    itens: ItemCesta[] = []
-    produtos = produtosMock
+  itens: ItemCesta[] = [];
+  produtos: Produto[] = [];
 
-    valorEconomizado = 0
+  valorEconomizado = 0;
+  carregando = true;
+  mensagem = '';
 
-    ngOnInit(): void {
-        this.itens = this.storage.getItemsCart()
-      }
+  ngOnInit(): void {
+    this.carregarProdutos();
+  }
 
-      getProduto(codigo: number): Produto | undefined {
-        return this.produtos.find(
-          produto => produto.codigo === codigo
-        )
-      }
+  carregarProdutos(): void {
+    this.itens = this.storage.getItemsCart();
 
-    totalCarrinho(): number {
-      return this.itens.reduce((total, item) => {
-        const produto = produtosMock.find(
-          produto => produto.codigo === item.produto
-        );
+    if (this.itens.length === 0) {
+      this.carregando = false;
+      return;
+    }
 
-        if (!produto) {
-          return total;
+    const requisicoes = this.itens.map(item =>
+      this.produtoService.buscarPorCodigo(item.produto)
+    );
+
+    forkJoin(requisicoes)
+      .pipe(
+        finalize(() => {
+          this.carregando = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (dados) => {
+          // Remove produtos que não foram encontrados na API
+          this.produtos = dados.filter(produto => produto.codigo > 0);
+
+          if (this.produtos.length === 0) {
+            this.mensagem = 'Nenhum produto encontrado no carrinho.';
+          }
+
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar produtos do carrinho:', err);
+          this.mensagem = 'Não foi possível carregar os produtos.';
         }
+      });
+  }
 
-        const preco = produto.valorPromo > 0
-          ? produto.valorPromo
-          : produto.valor;
+  getProduto(codigo: number): Produto | undefined {
+    return this.produtos.find(
+      produto => produto.codigo === codigo
+    );
+  }
 
-        return total + (preco * item.quantidade);
-      }, 0);
-    }
-    FinalizarCompra() : void {
-      localStorage.removeItem('user_cart')
-    }
+  totalCarrinho(): number {
+    return this.itens.reduce((total, item) => {
+      const produto = this.getProduto(item.produto);
 
-    RemoverItem(id: number): void {
-      this.itens = this.itens.filter(item => item.produto !== id);
+      if (!produto) {
+        return total;
+      }
 
-      localStorage.setItem(
-        'user_cart',
-        JSON.stringify(this.itens)
-      );
-    }
+      const preco = produto.valorPromo > 0
+        ? produto.valorPromo
+        : produto.valor;
+
+      return total + (preco * item.quantidade);
+    }, 0);
+  }
+
+  FinalizarCompra(): void {
+    localStorage.removeItem('user_cart');
+    this.itens = [];
+    this.produtos = [];
+  }
+
+  RemoverItem(id: number): void {
+    this.itens = this.itens.filter(
+      item => item.produto !== id
+    );
+
+    this.produtos = this.produtos.filter(
+      produto => produto.codigo !== id
+    );
+
+    localStorage.setItem(
+      'user_cart',
+      JSON.stringify(this.itens)
+    );
+  }
 }
-

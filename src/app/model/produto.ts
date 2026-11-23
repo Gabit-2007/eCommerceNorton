@@ -1,11 +1,11 @@
-export class Produto {
-    codigo: number=0;
-    nome:string='';
-    descritivo:string='';
-    valor:number=0;
-    valorPromo:number=0;
-    quantidade:number=0;
-    categoria: string='';
-    destaque:number=0;
-    keywords:string='';
+export interface Produto {
+  codigo: number
+  nome: string
+  descritivo: string
+  valor: number
+  valorPromo: number
+  quantidade: number
+  destaque: number
 }
+
+export type ProdutoForm = Omit<Produto, 'codigo'>

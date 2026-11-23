@@ -1,23 +1,70 @@
-import { Injectable } from '@angular/core';
-import { Produto } from '../model/produto';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+
+import { Injectable, inject } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
+import { Observable } from 'rxjs'
+
+import { Produto, ProdutoForm } from '../model/produto'
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ProdutoService {
-  carregarVitrine(): Observable<any> {
-    return this.http.get("http://localhost:8081/api/produto/vitrine");
 
+  private http = inject(HttpClient)
+
+  private readonly apiUrl = 'SUA_BASE_URL/api'
+
+  // Buscar produto pelo código
+  buscarPorCodigo(codigo: number): Observable<Produto> {
+    return this.http.get<Produto>(
+      `${this.apiUrl}/produto/${codigo}`
+    )
   }
-  fazerBusca(termo:string): Observable<any> {
-    return this.http.get("http://localhost:8081/api/produto/busca/"+ termo);
+
+  // Listar todos os produtos
+  listar(): Observable<Produto[]> {
+    return this.http.get<Produto[]>(
+      `${this.apiUrl}/produtos`
+    )
   }
 
-  gravar (obj:Produto): Observable<any> {
-    return this.http.post("http://localhost:8081/api/produto/post");
-
+  // Carregar produtos da vitrine
+  carregarVitrine(): Observable<Produto[]> {
+    return this.http.get<Produto[]>(
+      `${this.apiUrl}/produto/vitrine`
+    )
   }
 
+  // Pesquisar produtos
+  buscar(termo: string): Observable<Produto[]> {
+    return this.http.get<Produto[]>(
+      `${this.apiUrl}/produto/busca/${encodeURIComponent(termo)}`
+    )
+  }
+
+  // Cadastrar produto
+  cadastrar(produto: ProdutoForm): Observable<string> {
+    return this.http.post(
+      `${this.apiUrl}/produto`,
+      produto,
+      { responseType: 'text' }
+    )
+  }
+
+  // Alterar produto
+  alterar(produto: Produto): Observable<string> {
+    return this.http.put(
+      `${this.apiUrl}/produto`,
+      produto,
+      { responseType: 'text' }
+    )
+  }
+
+  // Excluir produto
+  excluir(codigo: number): Observable<string> {
+    return this.http.delete(
+      `${this.apiUrl}/produto/${codigo}`,
+      { responseType: 'text' }
+    )
+  }
 }

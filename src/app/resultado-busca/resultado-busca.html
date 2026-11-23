@@ -1,1 +1,16 @@
-<p>resultado-busca works!</p>
+
+@if (carregando) {
+  <p>Buscando produtos...</p>
+} @else if (mensagem) {
+  <p>{{ mensagem }}</p>
+} @else {
+  <div class="lista-produtos">
+    @for (produto of lista; track produto.codigo) {
+      <div>
+        <h3>{{ produto.nome }}</h3>
+        <p>{{ produto.descritivo }}</p>
+        <p>{{ produto.valor | currency:'BRL' }}</p>
+      </div>
+    }
+  </div>
+}

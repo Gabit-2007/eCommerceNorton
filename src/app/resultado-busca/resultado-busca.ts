@@ -1,34 +1,62 @@
-import { Component } from '@angular/core';
+
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
+
 import { ProdutoService } from '../service/produto-service';
 import { Produto } from '../model/produto';
-import { error } from 'console';
 
 @Component({
   selector: 'app-resultado-busca',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './resultado-busca.html',
   styleUrl: './resultado-busca.css',
 })
-export class ResultadoBusca {
+export class ResultadoBusca implements OnInit {
+  private service = inject(ProdutoService);
+  private cdr = inject(ChangeDetectorRef);
+
   lista: Produto[] = [];
-  mensagem: string = "";
-}
+  mensagem = '';
+  carregando = true;
 
-constructor(private service: ProdutoService){}
+  ngOnInit(): void {
+    this.buscarProdutos();
+  }
 
-ngOnInit(){
-  let json =localStorage.getItem("termoBusca");
+  buscarProdutos(): void {
+    const json = localStorage.getItem('termoBusca');
 
-  if(json==null){
-  this.mensagem = "Nada foi informado, nada de pesquisa";
-} else {
-  this.service.fazerBusca(JASON.parse(json)).subscribe({
-    next:(dados) => {
-      this.lista= dados;
-      if(this.lista.length <= 0) this.mensagem = "Não foi encontrado nada com o termo" + json;
-    },
-    error: (err) => {
-      this.mensagem = "ocorreu erro, tente mais tarde!";
-    } 
-  })
+    if (json === null) {
+      this.mensagem = 'Nada foi informado, nada de pesquisa';
+      this.carregando = false;
+      return;
+    }
+
+    const termo = JSON.parse(json);
+
+    this.service.buscar(termo)
+      .pipe(
+        finalize(() => {
+          this.carregando = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (dados) => {
+          this.lista = dados;
+
+          if (this.lista.length <= 0) {
+            this.mensagem = `Não foi encontrado nada com o termo "${termo}"`;
+          }
+
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Erro ao buscar produtos:', err);
+          this.mensagem = 'Ocorreu um erro, tente mais tarde!';
+        }
+      });
+  }
 }

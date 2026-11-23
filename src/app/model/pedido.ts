@@ -1,3 +1,9 @@
-export class Pedido {
-    itemPedido:number=0;
+
+export interface Pedido {
+  codigoPedido?: number;
+  valorTotal: number;
+  entrega: string;
+  obs: string;
+  dataPedido: string;
+  codigoCliente: number;
 }
