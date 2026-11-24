@@ -66,6 +66,10 @@ export class StorageService {
         const itensCart = this.ls?.getItem('user_cart')
         return itensCart ? JSON.parse(itensCart) : []
     }
+
+    clearCart(): void {
+      localStorage.removeItem('user_cart');
+    }
     ///#endregion
 
     ///#region Funções de favoritos

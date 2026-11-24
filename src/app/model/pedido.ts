@@ -1,9 +1,11 @@
 
 export interface Pedido {
-  codigoPedido?: number;
+  codigoPedido: number;
   valorTotal: number;
   entrega: string;
   obs: string;
   dataPedido: string;
   codigoCliente: number;
 }
+
+export type NovoPedido = Omit<Pedido, 'codigoPedido'>;

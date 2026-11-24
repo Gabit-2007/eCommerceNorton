@@ -1,5 +1,4 @@
-
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideTrash } from '@lucide/angular';
 import { finalize, forkJoin } from 'rxjs';
@@ -8,6 +7,8 @@ import { ItemCesta } from '../model/item-cesta';
 import { Produto } from '../model/produto';
 import { StorageService } from '../service/storageService';
 import { ProdutoService } from '../service/produto-service';
+import { PedidoService } from '../service/pedido-service';
+import { NovoPedido } from '../model/pedido';
 
 @Component({
   selector: 'app-carrinho',
@@ -19,14 +20,19 @@ import { ProdutoService } from '../service/produto-service';
 export class Carrinho implements OnInit {
   private storage = inject(StorageService);
   private produtoService = inject(ProdutoService);
-  private cdr = inject(ChangeDetectorRef);
+  private pedidoService = inject(PedidoService);
 
   itens: ItemCesta[] = [];
   produtos: Produto[] = [];
 
-  valorEconomizado = 0;
   carregando = true;
+  finalizando = false;
+
+  total = 0;
+  valorEconomizado = 0;
+
   mensagem = '';
+  mensagemSucesso = false;
 
   ngOnInit(): void {
     this.carregarProdutos();
@@ -37,6 +43,7 @@ export class Carrinho implements OnInit {
 
     if (this.itens.length === 0) {
       this.carregando = false;
+      this.total = 0;
       return;
     }
 
@@ -48,22 +55,22 @@ export class Carrinho implements OnInit {
       .pipe(
         finalize(() => {
           this.carregando = false;
-          this.cdr.detectChanges();
         })
       )
       .subscribe({
         next: (dados) => {
-          // Remove produtos que não foram encontrados na API
-          this.produtos = dados.filter(produto => produto.codigo > 0);
+          this.produtos = dados.filter(
+            produto => produto.codigo > 0
+          );
+
+          this.calcularTotal();
 
           if (this.produtos.length === 0) {
             this.mensagem = 'Nenhum produto encontrado no carrinho.';
           }
-
-          this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('Erro ao carregar produtos do carrinho:', err);
+        error: (erro) => {
+          console.error('Erro ao carregar produtos do carrinho:', erro);
           this.mensagem = 'Não foi possível carregar os produtos.';
         }
       });
@@ -75,27 +82,63 @@ export class Carrinho implements OnInit {
     );
   }
 
-  totalCarrinho(): number {
-    return this.itens.reduce((total, item) => {
+  calcularTotal(): void {
+    this.total = this.itens.reduce((soma, item) => {
       const produto = this.getProduto(item.produto);
 
       if (!produto) {
-        return total;
+        return soma;
       }
 
       const preco = produto.valorPromo > 0
         ? produto.valorPromo
         : produto.valor;
 
-      return total + (preco * item.quantidade);
+      return soma + preco * item.quantidade;
     }, 0);
   }
 
-  FinalizarCompra(): void {
-    localStorage.removeItem('user_cart');
-    this.itens = [];
-    this.produtos = [];
+ FinalizarCompra(): void {
+  console.log('clicou', { total: this.total, itens: this.itens.length });
+  if (
+    this.carregando ||
+    this.finalizando ||
+    this.itens.length === 0 ||
+    this.total <= 0
+  ) {
+    return;
   }
+
+  this.finalizando = true;
+  this.mensagem = '';
+
+  const pedido: NovoPedido = {
+    valorTotal: this.total,
+    entrega: 'Endereço do cliente', // ajuste: de onde vem a entrega?
+    obs: '',
+    dataPedido: new Date().toISOString(),
+    codigoCliente: 1, // ajuste: pegar do cliente logado
+  };
+
+  this.pedidoService.criarPedido(pedido)
+    .pipe(finalize(() => (this.finalizando = false)))
+    .subscribe({
+      next: () => {
+        this.mensagem = 'Pedido realizado com sucesso!';
+        this.mensagemSucesso = true;
+
+        this.itens = [];
+        this.produtos = [];
+        this.total = 0;
+        localStorage.removeItem('user_cart');
+      },
+      error: (erro) => {
+        console.error('Erro ao finalizar pedido:', erro);
+        this.mensagem = 'Não foi possível finalizar a compra.';
+        this.mensagemSucesso = false;
+      }
+    });
+}
 
   RemoverItem(id: number): void {
     this.itens = this.itens.filter(
@@ -110,5 +153,7 @@ export class Carrinho implements OnInit {
       'user_cart',
       JSON.stringify(this.itens)
     );
+
+    this.calcularTotal();
   }
 }
