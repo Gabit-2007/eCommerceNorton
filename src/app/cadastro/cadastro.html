@@ -8,6 +8,27 @@
     shadow-2xl">
         <h1>CADASTRAR-SE</h1>
         <app-input
+            label = 'Nome'
+            placeholder = 'Seu nome completo'
+            type = 'text'
+            name="txtNome"
+            [(ngModel)]="obj.nome"
+        ></app-input>
+        <app-input
+            label = 'Documento (CPF)'
+            placeholder = '000.000.000-00'
+            type = 'text'
+            name="txtDocumento"
+            [(ngModel)]="obj.documento"
+        ></app-input>
+        <app-input
+            label = 'Telefone'
+            placeholder = '(11) 99999-9999'
+            type = 'text'
+            name="txtTelefone"
+            [(ngModel)]="obj.telefone"
+        ></app-input>
+        <app-input
             label = 'Email'
             placeholder = 'usuario@email.com'
             type = 'email'
@@ -26,6 +47,8 @@
             label = 'Confirme a senha'
             placeholder = 'Senha@123'
             type = 'password'
+            name="txtConfirmaSenha"
+            [(ngModel)]="confirmaSenha"
         ></app-input>
         <app-input
             label = 'Data de nascimento'
@@ -38,13 +61,14 @@
             placeholder = 'Rua abc, são paulo - Brasil'
             type = 'text'
             name="txtEndereco"
-            [(ngModel)]="obj.endereco"
+            [(ngModel)]="obj.logradouro"
         ></app-input>
-        <a href="login">
+        @if (mensagem) {
+            <p class="text-center text-sm mb-2" [class.text-red-700]="erro" [class.text-green-900]="!erro">{{ mensagem }}</p>
+        }
+        <a href="login" (click)="gravar($event)">
             <button 
             class="bg-green-900 text-white py-2 px-10 rounded w-fit self-center"
-            (click)="gravar()"
-            
             >Finalizar</button>
         </a>
         <p class="text-center mt-3">Já tem conta? <a href="login">Faça login!</a></p>

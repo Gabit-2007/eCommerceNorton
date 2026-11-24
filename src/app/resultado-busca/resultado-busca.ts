@@ -1,6 +1,7 @@
 
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { ProdutoService } from '../service/produto-service';
@@ -16,25 +17,32 @@ import { Produto } from '../model/produto';
 export class ResultadoBusca implements OnInit {
   private service = inject(ProdutoService);
   private cdr = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
 
   lista: Produto[] = [];
   mensagem = '';
   carregando = true;
 
   ngOnInit(): void {
-    this.buscarProdutos();
+    // O termo vem na URL (/resultado-busca?termo=...). Assim, uma nova busca
+    // feita estando nesta mesma página também atualiza a lista.
+    this.route.queryParamMap.subscribe((params) => {
+      this.buscarProdutos((params.get('termo') ?? '').trim());
+    });
   }
 
-  buscarProdutos(): void {
-    const json = localStorage.getItem('termoBusca');
+  buscarProdutos(termo: string): void {
+    this.lista = [];
+    this.mensagem = '';
 
-    if (json === null) {
-      this.mensagem = 'Nada foi informado, nada de pesquisa';
+    if (!termo) {
+      this.mensagem = 'Nada foi informado na pesquisa';
       this.carregando = false;
+      this.cdr.detectChanges();
       return;
     }
 
-    const termo = JSON.parse(json);
+    this.carregando = true;
 
     this.service.buscar(termo)
       .pipe(

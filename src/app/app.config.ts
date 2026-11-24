@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter, RouterLink, RouterOutlet, withViewTransitions } from '@angular/router';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideLucideIcons, LucideUser, LucideShoppingCart, LucideShoppingCartPlus, LucideStar } from '@lucide/angular'
 
 import { routes } from './app.routes';
@@ -9,6 +10,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withViewTransitions()), 
+    provideHttpClient(withFetch()),
     provideClientHydration(withEventReplay()),
     provideLucideIcons(LucideShoppingCart, LucideShoppingCartPlus, LucideStar, LucideUser),
   ]

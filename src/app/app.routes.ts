@@ -9,11 +9,13 @@ import { Busca } from './busca/busca';
 import { Favoritos } from './favoritos/favoritos';
 import { EmailSenha } from './email-senha/email-senha';
 import { ConfirmarCodigo } from './confirmar-codigo/confirmar-codigo';
+import { ResultadoBusca } from './resultado-busca/resultado-busca';
 
 
 export const routes: Routes = [
     {path: "", component: Feed}, 
     {path: "busca", component: Busca},
+    {path: "resultado-busca", component: ResultadoBusca},
     {path: "cadastro", component: Cadastro},
     {path: "carrinho", component: Carrinho},
     {path: "detalhe-item/:codigo", component: DetalheItem}, 

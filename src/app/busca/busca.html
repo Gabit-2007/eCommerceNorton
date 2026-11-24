@@ -4,10 +4,14 @@
     <svg
     lucideSearch
     color="#cb997eff"
+    (click)="buscar()"
     ></svg>
     <input 
         type="text" 
+        name="txtBusca"
         class=" text-(--black) focus-within:outline-none w-full max-h-fit" 
         placeholder="Pesquisar..."
+        [(ngModel)]="termo"
+        (keydown.enter)="buscar()"
     >
 </div>

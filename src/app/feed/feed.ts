@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ProdutoService } from '../service/produto-service';
 import { CardProduto } from '../card-produto/card-produto';
 import { finalize } from 'rxjs';
-import { Router } from 'express';
-import { StorageService } from '../service/storageService';
 
 @Component({
   selector: 'app-feed',
@@ -17,8 +15,6 @@ export class Feed {
   mensagem : String = "";
   lista: Produto[] = [];
 
-   private router = inject(Router());
-  private storage = inject(StorageService);
   private produtoService = inject(ProdutoService);
   private cdr = inject(ChangeDetectorRef);
 

@@ -9,14 +9,21 @@
             label = 'Email'
             placeholder = 'usuario@email.com'
             type = 'email'
+            name="txtEmail"
+            [(ngModel)]="obj.email"
         ></app-input>
 
         <app-input
             label = 'Senha'
             placeholder = 'Senha@123'
             type = 'password'
+            name="txtSenha"
+            [(ngModel)]="obj.senha"
         ></app-input>
-        <a href="/">
+        @if (mensagem) {
+            <p class="text-center text-sm text-red-700 mb-2">{{ mensagem }}</p>
+        }
+        <a href="/" (click)="fazerLogin($event)">
             <button class="bg-green-900 text-white py-2 px-10 rounded w-fit self-center">ENTRAR</button>
         </a>
         <p class="text-center mt-3">Não tem conta? <a href="cadastro">Crie uma agora!</a></p>

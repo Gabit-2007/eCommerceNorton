@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
 import { Produto, ProdutoForm } from '../model/produto'
+import { API_URL } from './api'
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ProdutoService {
 
   private http = inject(HttpClient)
 
-  private readonly apiUrl = 'SUA_BASE_URL/api'
+  private readonly apiUrl = API_URL
 
   // Buscar produto pelo código
   buscarPorCodigo(codigo: number): Observable<Produto> {

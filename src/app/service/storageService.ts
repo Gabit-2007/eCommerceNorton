@@ -9,15 +9,40 @@ import { ItemCesta } from "../model/item-cesta";
 
 export class StorageService {
 
+    // No servidor (SSR/prerender) o localStorage não existe; nesse caso devolve null
+    private get ls(): Storage | null {
+        try {
+            return typeof localStorage !== 'undefined' ? localStorage : null
+        } catch {
+            return null
+        }
+    }
+
     ///#region Funções de usuário
     setUser(user : Pick<Cliente, 'nome' | 'senha' | 'dtNascimento'>): void {
-        window.localStorage.setItem('user_data', JSON.stringify(user))
+        this.ls?.setItem('user_data', JSON.stringify(user))
     }
 
     getUser(): Pick<Cliente, 'nome' | 'senha' | 'dtNascimento'> | null {
-        const userData = localStorage.getItem('user_data')
+        const userData = this.ls?.getItem('user_data')
 
         return userData ? JSON.parse(userData) : null
+    }
+    ///#endregion
+
+    ///#region Cliente logado (dados devolvidos pela API no login/cadastro)
+    setCliente(cliente: Cliente): void {
+        this.ls?.setItem('cliente_logado', JSON.stringify(cliente))
+    }
+
+    getCliente(): Cliente | null {
+        const json = this.ls?.getItem('cliente_logado')
+
+        return json ? JSON.parse(json) : null
+    }
+
+    removeCliente(): void {
+        this.ls?.removeItem('cliente_logado')
     }
     ///#endregion
 
@@ -29,16 +54,16 @@ export class StorageService {
   
         if(itensAdded){
             itensAdded.quantidade += 1
-            localStorage.setItem('user_cart', JSON.stringify(itensCart))
+            this.ls?.setItem('user_cart', JSON.stringify(itensCart))
             return
         }
         itensCart?.push(item)
-        localStorage.setItem('user_cart', JSON.stringify(itensCart))
+        this.ls?.setItem('user_cart', JSON.stringify(itensCart))
 
     }
 
     getItemsCart(): ItemCesta[] {
-        const itensCart = localStorage.getItem('user_cart')
+        const itensCart = this.ls?.getItem('user_cart')
         return itensCart ? JSON.parse(itensCart) : []
     }
     ///#endregion
@@ -52,16 +77,16 @@ export class StorageService {
         } 
         else {
             const newFav = favItens.filter(fav => fav.codigo !== item.codigo)
-            localStorage.setItem('user_favorites', JSON.stringify(newFav))
+            this.ls?.setItem('user_favorites', JSON.stringify(newFav))
             return
         }
 
-        localStorage.setItem('user_favorites', JSON.stringify(favItens))
+        this.ls?.setItem('user_favorites', JSON.stringify(favItens))
         
     }
 
     getItemFavorite(): Pick<Produto, 'codigo'>[] {
-        const favItens = localStorage.getItem('user_favorites')
+        const favItens = this.ls?.getItem('user_favorites')
 
         return favItens ? JSON.parse(favItens) : []
     }
