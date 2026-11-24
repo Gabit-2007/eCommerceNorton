@@ -6,11 +6,12 @@ import { finalize } from 'rxjs';
 
 import { ProdutoService } from '../service/produto-service';
 import { Produto } from '../model/produto';
+import { CardProduto } from '../card-produto/card-produto';
 
 @Component({
   selector: 'app-resultado-busca',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CardProduto],
   templateUrl: './resultado-busca.html',
   styleUrl: './resultado-busca.css',
 })

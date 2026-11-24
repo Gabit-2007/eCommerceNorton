@@ -1,16 +1,13 @@
 
 @if (carregando) {
-  <p>Buscando produtos...</p>
+  <p class="p-5">Buscando produtos...</p>
 } @else if (mensagem) {
-  <p>{{ mensagem }}</p>
+  <p class="p-5">{{ mensagem }}</p>
 } @else {
-  <div class="lista-produtos">
+  <!-- mesmos cards do feed: "Ver mais" abre o detalhe e "Comprar" põe no carrinho -->
+  <div class="w-full flex flex-wrap justify-center gap-3 mt-5 pb-5">
     @for (produto of lista; track produto.codigo) {
-      <div>
-        <h3>{{ produto.nome }}</h3>
-        <p>{{ produto.descritivo }}</p>
-        <p>{{ produto.valor | currency:'BRL' }}</p>
-      </div>
+      <app-card-produto [produto]="produto" />
     }
   </div>
 }
